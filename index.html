@@ -56,13 +56,19 @@
                                 <button @click="iniciar()" style="width: 100%; background-color: #6f42c1;" type="button" class="btn btn-md btn-dark">Iniciar</button>
                             </div>
                         </div>
-                        
                         <div v-if="resultados" class="card-body text-center">
                             <p class="p-2" v-for="resultado in resultados">
                                 Color: {{resultado.label}}
                                 <br>
                                 Porcentaje: {{resultado.confidence}}
                             </p>
+                            <br>
+                            <button @click="bien()" type="button" class="btn btn-md btn-success">Bien</button>
+                            <button @click="mal = true" type="button" class="btn btn-md btn-danger">Mal</button>
+                            <div v-if="mal">
+                                <input  v-model="color" class="form-control m-2" type="text" placeholder="¿Qué color es?">
+                                <button @click="guardar()" type="button" style="width: 100%;" class="btn btn-md btn-info m-3">Aprender</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -75,17 +81,7 @@
             el: '#app',
             data: {
                 // Step 1: load data or create some data
-                db: [
-                    { r: 255, g: 0, b: 0, color: "red-ish" },
-                    { r: 254, g: 0, b: 0, color: "red-ish" },
-                    { r: 253, g: 0, b: 0, color: "red-ish" },
-                    { r: 0, g: 255, b: 0, color: "green-ish" },
-                    { r: 0, g: 254, b: 0, color: "green-ish" },
-                    { r: 0, g: 253, b: 0, color: "green-ish" },
-                    { r: 0, g: 0, b: 255, color: "blue-ish" },
-                    { r: 0, g: 0, b: 254, color: "blue-ish" },
-                    { r: 0, g: 0, b: 253, color: "blue-ish" },
-                ],
+                db: [],
                 // Step 2: set your neural network options
                 options:{
                     task: "classification",
@@ -109,8 +105,29 @@
                 },
                 // Step 9: show results
                 resultados: null,
+
+                mal: false,
+                color: null,
             },
-            created() {},
+            created() {
+                if(localStorage.getItem('db')){
+                    this.db = JSON.parse(localStorage.getItem('db'))
+                    console.log(this.db)
+                }else{
+                    this.db = [
+                        { r: 255, g: 0, b: 0, color: "red-ish" },
+                        { r: 254, g: 0, b: 0, color: "red-ish" },
+                        { r: 253, g: 0, b: 0, color: "red-ish" },
+                        { r: 0, g: 255, b: 0, color: "green-ish" },
+                        { r: 0, g: 254, b: 0, color: "green-ish" },
+                        { r: 0, g: 253, b: 0, color: "green-ish" },
+                        { r: 0, g: 0, b: 255, color: "blue-ish" },
+                        { r: 0, g: 0, b: 254, color: "blue-ish" },
+                        { r: 0, g: 0, b: 253, color: "blue-ish" },
+                    ]
+                    localStorage.setItem('db', JSON.stringify(this.db))
+                }
+            },
             methods: {
                 iniciar(){
                     // Step 3: initialize your neural network
@@ -148,6 +165,42 @@
                     }
                     // {label: 'red', confidence: 0.8};
                     this.resultados = result
+                },
+                // si esta bien
+                bien(){
+                    let porcentajes = []
+                    for (const resultado of this.resultados) {
+                        porcentajes.push(resultado.confidence)
+                    }
+                    max = Math.max(...porcentajes)
+                    for (const resultado of this.resultados) {
+                        if(resultado.confidence == max){
+                            alert('Color:' + resultado.label + '; ' + '%:' + resultado.confidence)
+                        }
+                    }
+                    this.limpiar()
+                },
+                // aprender
+                guardar(){
+                    // crea item de aprendizaje
+                    let item = { r: this.input.r, g: this.input.g, b: this.input.b, color: this.color }
+                    // se guarda en el local
+                    this.db.push(item)
+                    localStorage.setItem('db', JSON.stringify(this.db))
+                    // volver a intentar
+                    this.iniciar()
+                    // limpiar
+                    this.mal = false
+                },
+                // limpiamos campos
+                limpiar(){
+                    this.input.r = 0
+                    this.input.g = 0
+                    this.input.b = 0
+                    this.color = 0
+                    this.resultados = null
+                    this.color = null
+                    this.mal = false
                 }
             },
         })
