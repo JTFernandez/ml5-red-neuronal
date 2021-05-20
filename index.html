@@ -27,13 +27,13 @@
   </head>
   <body>
       <main id="app">
-        <div class="container p-4">
+        <div class="container-fluid p-4">
             <div class="row align-items-center g-5">
-                <div class="col-md-3"></div>
-                <div class="col-md-6">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
                     <div class="card p-4">
                         <center>
-                            <img class="card-img-top" style="width: 80%;" src="https://learn.ml5js.org/_media/reference__header-neural-network.png" alt="">
+                            <img class="card-img-top" style="width: 250px;" src="https://learn.ml5js.org/_media/reference__header-neural-network.png" alt="">
                         </center>
                         <div class="card-body text-center">
                             <h4 class="card-title">Porcentaje de Color</h4>
@@ -57,22 +57,35 @@
                             </div>
                         </div>
                         <div v-if="resultados" class="card-body text-center">
-                            <p class="p-2" v-for="resultado in resultados">
-                                Color: {{resultado.label}}
-                                <br>
-                                Porcentaje: {{resultado.confidence}}
-                            </p>
+                            <div class="p-4 border shadow rounded" style="overflow: auto; height: 250px;">
+                                <div v-for="(resultado, index) in resultados">
+                                    <div v-if="index == 0" class="border border-success rounded shadow p-2">
+                                        <p style="margin: 0px;">
+                                            {{index + 1}} - Color: {{resultado.label}}
+                                            <br>
+                                            Seguro un: {{(resultado.confidence * 100).toFixed(2)}} %
+                                        </p>
+                                    </div>
+                                    <div v-else class="p-2">
+                                        <p style="margin: 0px;">
+                                            {{index + 1}} - Color: {{resultado.label}}
+                                            <br>
+                                            Seguro un: {{(resultado.confidence * 100).toFixed(2)}} %
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                             <br>
                             <button @click="bien()" type="button" class="btn btn-md btn-success">Bien</button>
                             <button @click="mal = true" type="button" class="btn btn-md btn-danger">Mal</button>
                             <div v-if="mal">
-                                <input  v-model="color" class="form-control m-2" type="text" placeholder="¿Qué color es?">
-                                <button @click="guardar()" type="button" style="width: 100%;" class="btn btn-md btn-info m-3">Aprender</button>
+                                <input  v-model="color" class="form-control mb-2 mt-2" type="text" placeholder="¿Qué color es?">
+                                <button @click="guardar()" type="button" style="width: 100%;" class="btn btn-md btn-info">Aprender</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3"></div>
+                <div class="col-md-4"></div>
             </div>
           </div>
       </main>
