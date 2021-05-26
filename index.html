@@ -1,10 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--libreria-css-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
     <!--libreria-neurona-->
     <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
     <!--vue-->
@@ -12,198 +17,352 @@
     <title>Neurona</title>
     <!--estilos-->
     <style>
-        body{
-            background-color: #6f42c1;
-        }
-        .container{
-            width: 100%;
-            height: 100vh;
-            overflow: auto;
-        }
-        .row{
-            height: 100%;
-        }
+      body {
+        background-color: rgb(202, 108, 249);
+      }
+      .container {
+        width: 100%;
+        height: 100vh;
+        overflow: auto;
+      }
+      .row {
+        height: 100%;
+      }
+      .caja {
+        width: 150px;
+        height: 50px;
+        border: 1px solid black;
+        padding: 5px;
+        margin: 5px 5px 5px 0px;
+        background: white;
+        border-radius: 8%;
+        text-align: center;
+      }
+      input[type="range"] {
+        -webkit-appearance: none;
+        height: 10px;
+        width: 80%;
+        border-radius: 50px;
+        outline: none;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 25px;
+        width: 25px;
+        background: #fff;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      #rojo {
+        background: linear-gradient(90deg, #000, red);
+      }
+      #verde {
+        background: linear-gradient(90deg, #000, green);
+      }
+      #azul {
+        background: linear-gradient(90deg, #000, blue);
+      }
     </style>
   </head>
   <body>
-      <main id="app">
-        <div class="container p-4">
-            <div class="row align-items-center g-5">
-                <div class="col-md-3"></div>
-                <div class="col-md-6">
-                    <div class="card p-4">
-                        <center>
-                            <img class="card-img-top" style="width: 80%;" src="https://learn.ml5js.org/_media/reference__header-neural-network.png" alt="">
-                        </center>
-                        <div class="card-body text-center">
-                            <h4 class="card-title">Porcentaje de Color</h4>
-                            <p class="card-text">(Neurona)</p>
-                        </div>
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <label>R</label>
-                                <input type="number" v-model.number="input.r" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <label>G</label>
-                                <input type="number" v-model.number="input.g" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <label>B</label>
-                                <input type="number" v-model.number="input.b" class="form-control">
-                            </div>
-                            <div class="col-md-12">
-                                <button @click="iniciar()" style="width: 100%; background-color: #6f42c1;" type="button" class="btn btn-md btn-dark">Iniciar</button>
-                            </div>
-                        </div>
-                        <div v-if="resultados" class="card-body text-center">
-                            <p class="p-2" v-for="resultado in resultados">
-                                Color: {{resultado.label}}
-                                <br>
-                                Porcentaje: {{resultado.confidence}}
-                            </p>
-                            <br>
-                            <button @click="bien()" type="button" class="btn btn-md btn-success">Bien</button>
-                            <button @click="mal = true" type="button" class="btn btn-md btn-danger">Mal</button>
-                            <div v-if="mal">
-                                <input  v-model="color" class="form-control m-2" type="text" placeholder="¿Qué color es?">
-                                <button @click="guardar()" type="button" style="width: 100%;" class="btn btn-md btn-info m-3">Aprender</button>
-                            </div>
-                        </div>
-                    </div>
+    <main id="app">
+      <div class="container p-4">
+        <div class="row align-items-center g-5">
+          <div class="col-md-3"></div>
+          <div class="col-md-6">
+            <div class="col-md-6">
+              <div>
+                <label>Rojo:</label>
+                <label> R:</label>
+                <br />
+                <input
+                  type="range"
+                  min="0"
+                  max="255"
+                  onmouseover="Crear()"
+                  id="rojo"
+                  value="202"
+                />
+              </div>
+              <div>
+                <label>Verde:</label>
+                <label> G:</label>
+                <br />
+                <input
+                  type="range"
+                  min="0"
+                  max="255"
+                  onmouseover="Crear()"
+                  id="verde"
+                  value="108"
+                />
+              </div>
+              <div>
+                <label>Azul:</label>
+                <label> B:</label>
+                <br />
+                <input
+                  type="range"
+                  min="0"
+                  max="255"
+                  onmouseover="Crear()"
+                  id="azul"
+                  value="249"
+                />
+              </div>
+              <div>
+                <input
+                  class="caja"
+                  type="text"
+                  id="caja"
+                  value="rgb(202,108,249)"
+                />
+              </div>
+            </div>
+            <div class="card p-4">
+              <center>
+                <img
+                  class="card-img-top"
+                  style="width: 80%"
+                  src="https://learn.ml5js.org/_media/reference__header-neural-network.png"
+                  alt=""
+                />
+              </center>
+              <div class="card-body text-center">
+                <h4 class="card-title">Porcentaje de Color</h4>
+                <p class="card-text">(Neurona)</p>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label>R</label>
+                  <input
+                    type="number"
+                    v-model.number="input.r"
+                    class="form-control"
+                  />
                 </div>
-                <div class="col-md-3"></div>
+                <div class="col-md-4">
+                  <label>G</label>
+                  <input
+                    type="number"
+                    v-model.number="input.g"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label>B</label>
+                  <input
+                    type="number"
+                    v-model.number="input.b"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-md-12">
+                  <button
+                    @click="iniciar()"
+                    style="width: 100%; background-color: #6f42c1"
+                    type="button"
+                    class="btn btn-md btn-dark"
+                  >
+                    Iniciar
+                  </button>
+                </div>
+              </div>
+              <div v-if="resultados" class="card-body text-center">
+                <p class="p-2" v-for="resultado in resultados">
+                  Color: {{resultado.label}}
+                  <br />
+                  Porcentaje: {{resultado.confidence}}
+                </p>
+                <br />
+                <button
+                  @click="bien()"
+                  type="button"
+                  class="btn btn-md btn-success"
+                >
+                  Bien
+                </button>
+                <button
+                  @click="mal = true"
+                  type="button"
+                  class="btn btn-md btn-danger"
+                >
+                  Mal
+                </button>
+                <div v-if="mal">
+                  <input
+                    v-model="color"
+                    class="form-control m-2"
+                    type="text"
+                    placeholder="¿Qué color es?"
+                  />
+                  <button
+                    @click="guardar()"
+                    type="button"
+                    style="width: 100%"
+                    class="btn btn-md btn-info m-3"
+                  >
+                    Aprender
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-      </main>
+          <div class="col-md-3"></div>
+        </div>
+      </div>
+    </main>
     <script>
-        var app = new Vue({
-            el: '#app',
-            data: {
-                // Step 1: load data or create some data
-                db: [],
-                // Step 2: set your neural network options
-                options:{
-                    task: "classification",
-                    debug: true,
-                },
-                // Step 3: initialize your neural network
-                nn: null,
-                // Step 4: add data to the neural network
-                inputs: null,
-                output: null,
-                // Step 6: train your neural network
-                trainingOptions: {
-                    epochs: 90,
-                    batchSize: 90,
-                },
-                // Step 8: make a classification
-                input: {
-                    r: 0,
-                    g: 0,
-                    b: 0,
-                },
-                // Step 9: show results
-                resultados: null,
+      function Crear() {
+          //toma los valores del input
+        var red = document.getElementById("rojo").value;
+        var green = document.getElementById("verde").value;
+        var blue = document.getElementById("azul").value;
+        var color = "rgb(" + red + "," + green + "," + blue + ")";
 
-                mal: false,
-                color: null,
-            },
-            created() {
-                if(localStorage.getItem('db')){
-                    this.db = JSON.parse(localStorage.getItem('db'))
-                    console.log(this.db)
-                }else{
-                    this.db = [
-                        { r: 255, g: 0, b: 0, color: "red-ish" },
-                        { r: 254, g: 0, b: 0, color: "red-ish" },
-                        { r: 253, g: 0, b: 0, color: "red-ish" },
-                        { r: 0, g: 255, b: 0, color: "green-ish" },
-                        { r: 0, g: 254, b: 0, color: "green-ish" },
-                        { r: 0, g: 253, b: 0, color: "green-ish" },
-                        { r: 0, g: 0, b: 255, color: "blue-ish" },
-                        { r: 0, g: 0, b: 254, color: "blue-ish" },
-                        { r: 0, g: 0, b: 253, color: "blue-ish" },
-                    ]
-                    localStorage.setItem('db', JSON.stringify(this.db))
-                }
-            },
-            methods: {
-                iniciar(){
-                    // Step 3: initialize your neural network
-                    this.nn = ml5.neuralNetwork(this.options)
-                    // Step 4: add data to the neural network
-                    this.db.forEach((item) => {
-                        this.inputs = {
-                            r: item.r,
-                            g: item.g,
-                            b: item.b,
-                        };
-                        this.output = {
-                            color: item.color,
-                        };
-                        this.nn.addData(this.inputs, this.output)
-                    });
-                    // Step 5: normalize your data;
-                    this.nn.normalizeData()
-                    this.nn.train(this.trainingOptions, this.finishedTraining)
-                },
-                // Step 7: use the trained model
-                finishedTraining(){
-                    this.classify()
-                },
-                // Step 8: make a classification
-                classify() {
-                    
-                    this.nn.classify(this.input, this.handleResults)
-                },
-                // Step 9: define a function to handle the results of your classification
-                handleResults(error, result) {
-                    if (error) {
-                        console.error(error)
-                        return
-                    }
-                    // {label: 'red', confidence: 0.8};
-                    this.resultados = result
-                },
-                // si esta bien
-                bien(){
-                    let porcentajes = []
-                    for (const resultado of this.resultados) {
-                        porcentajes.push(resultado.confidence)
-                    }
-                    max = Math.max(...porcentajes)
-                    for (const resultado of this.resultados) {
-                        if(resultado.confidence == max){
-                            alert('Color:' + resultado.label + '; ' + '%:' + resultado.confidence)
-                        }
-                    }
-                    this.limpiar()
-                },
-                // aprender
-                guardar(){
-                    // crea item de aprendizaje
-                    let item = { r: this.input.r, g: this.input.g, b: this.input.b, color: this.color }
-                    // se guarda en el local
-                    this.db.push(item)
-                    localStorage.setItem('db', JSON.stringify(this.db))
-                    // volver a intentar
-                    this.iniciar()
-                    // limpiar
-                    this.mal = false
-                },
-                // limpiamos campos
-                limpiar(){
-                    this.input.r = 0
-                    this.input.g = 0
-                    this.input.b = 0
-                    this.color = 0
-                    this.resultados = null
-                    this.color = null
-                    this.mal = false
-                }
-            },
-        })
+        //le da el estilo al body
+        document.body.style.backgroundColor = color;
+        document.getElementById("caja").value = color;
+      }
+      
+
+      var app = new Vue({
+        el: "#app",
+        data: {
+          // Step 1: load data or create some data
+          db: [],
+          // Step 2: set your neural network options
+          options: {
+            task: "classification",
+            debug: true,
+          },
+          // Step 3: initialize your neural network
+          nn: null,
+          // Step 4: add data to the neural network
+          inputs: null,
+          output: null,
+          // Step 6: train your neural network
+          trainingOptions: {
+            epochs: 90,
+            batchSize: 90,
+          },
+          // Step 8: make a classification
+          input: {
+            r: 0,
+            g: 0,
+            b: 0,
+          },
+          // Step 9: show results
+          resultados: null,
+
+          mal: false,
+          color: null,
+        },
+        created() {
+          if (localStorage.getItem("db")) {
+            this.db = JSON.parse(localStorage.getItem("db"));
+            console.log(this.db);
+          } else {
+            this.db = [
+              { r: 255, g: 0, b: 0, color: "red-ish" },
+              { r: 254, g: 0, b: 0, color: "red-ish" },
+              { r: 253, g: 0, b: 0, color: "red-ish" },
+              { r: 0, g: 255, b: 0, color: "green-ish" },
+              { r: 0, g: 254, b: 0, color: "green-ish" },
+              { r: 0, g: 253, b: 0, color: "green-ish" },
+              { r: 0, g: 0, b: 255, color: "blue-ish" },
+              { r: 0, g: 0, b: 254, color: "blue-ish" },
+              { r: 0, g: 0, b: 253, color: "blue-ish" },
+            ];
+            localStorage.setItem("db", JSON.stringify(this.db));
+          }
+        },
+        methods: {
+          iniciar() {
+            // Step 3: initialize your neural network
+            this.nn = ml5.neuralNetwork(this.options);
+            // Step 4: add data to the neural network
+            this.db.forEach((item) => {
+              this.inputs = {
+                r: item.r,
+                g: item.g,
+                b: item.b,
+              };
+              this.output = {
+                color: item.color,
+              };
+              this.nn.addData(this.inputs, this.output);
+            });
+            // Step 5: normalize your data;
+            this.nn.normalizeData();
+            this.nn.train(this.trainingOptions, this.finishedTraining);
+          },
+          // Step 7: use the trained model
+          finishedTraining() {
+            this.classify();
+          },
+          // Step 8: make a classification
+          classify() {
+            this.nn.classify(this.input, this.handleResults);
+          },
+          // Step 9: define a function to handle the results of your classification
+          handleResults(error, result) {
+            if (error) {
+              console.error(error);
+              return;
+            }
+            // {label: 'red', confidence: 0.8};
+            this.resultados = result;
+          },
+          // si esta bien
+          bien() {
+            let porcentajes = [];
+            for (const resultado of this.resultados) {
+              porcentajes.push(resultado.confidence);
+            }
+            max = Math.max(...porcentajes);
+            for (const resultado of this.resultados) {
+              if (resultado.confidence == max) {
+                alert(
+                  "Color:" +
+                    resultado.label +
+                    "; " +
+                    "%:" +
+                    resultado.confidence
+                );
+              }
+            }
+            this.limpiar();
+          },
+          // aprender
+          guardar() {
+            // crea item de aprendizaje
+            let item = {
+              r: this.input.r,
+              g: this.input.g,
+              b: this.input.b,
+              color: this.color,
+            };
+            // se guarda en el local
+            this.db.push(item);
+            localStorage.setItem("db", JSON.stringify(this.db));
+            // volver a intentar
+            this.iniciar();
+            // limpiar
+            this.mal = false;
+          },
+          // limpiamos campos
+          limpiar() {
+            this.input.r = 0;
+            this.input.g = 0;
+            this.input.b = 0;
+            this.color = 0;
+            this.resultados = null;
+            this.color = null;
+            this.mal = false;
+          },
+        },
+      });
     </script>
   </body>
 </html>
