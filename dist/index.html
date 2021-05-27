@@ -45,12 +45,10 @@
 
 <body>
     <!-- APP -->
-    <main id="app">
-        <div class="container-fluid p-4">
-            <div class="row align-items-center g-5">
-                <div class="col-md-4"></div>
-                <div class="col-md-4">
-                </div>
+   <div id="app" class="container p-4">
+        <div class="row align-items-center g-5">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
                 <div class="card p-4">
                     <center>
                         <img class="card-img-top" style="width: 250px;"
@@ -64,20 +62,20 @@
                         <div class="col-md-4">
                             <label>R</label>
                             <input type="range" v-model.number="input.r" class="form-control" min="0" max="255"
-                                id="rojo" value="202" @change="colores()">
+                                id="rojo" value="0" @change="colores()">
                         </div>
                         <div class="col-md-4">
                             <label>G</label>
                             <input type="range" v-model.number="input.g" class="form-control" min="0" max="255"
-                                id="verde" value="108" @change="colores()">
+                                id="verde" value="0" @change="colores()">
                         </div>
                         <div class="col-md-4">
                             <label>B</label>
                             <input type="range" v-model.number="input.b" class="form-control" min="0" max="255"
-                                id="azul" value="249" @change="colores()">
+                                id="azul" value="0" @change="colores()">
                         </div>
                         <div>
-                            <input class="caja" type="text" id="caja" value="RGB(202, 108, 249)" />
+                            <input class="caja" type="text" id="caja" value="RGB(111, 66, 193)" />
                         </div>
                         <div class="col-md-12">
                             <button @click="iniciar()" style="width: 100%; background-color: #6f42c1;" type="button"
@@ -129,10 +127,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4"></div>
+            <div class="col-md-3"></div>
         </div>
-        </div>
-    </main>
+    </div>
     <!-- CONFIGURACIÓN -->
     <script>
         var app = new Vue({
