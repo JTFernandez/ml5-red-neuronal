@@ -1,21 +1,23 @@
 <!doctype html>
 <html lang="es">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--titulo-->
-    <title>ColorsNetwork</title>
-    <!--libreria-css-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <!--estilos-->
+    <!-- TÍTULO -->
+    <title>Red Neuronal</title>
+    <!-- LIBRERÍA CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- ESTILOS -->
     <link rel="stylesheet" href="estilos.css">
-    <!--sweet alert-->
+    <!-- SWEET ALERT -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!--libreria-neurona-->
+    <!-- LIBRERÍA NEURONA -->
     <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
-    <!--vue-->
+    <!-- VUE -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <!--firebase-->
+    <!-- FIREBASE -->
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
     <!-- TODO: Add SDKs for Firebase products that you want to use
@@ -34,22 +36,25 @@
             appId: "1:727824220935:web:a40f1dc2388ecd9863fba2",
             measurementId: "G-464PFPQGQQ"
         };
-        // Initialize Firebase
+        // INICIALIZAR FIREBASE
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
         var db = firebase.firestore();
     </script>
-  </head>
-  <body>
-    <!--APP-->
+</head>
+
+<body>
+    <!-- APP -->
     <main id="app">
-    <div class="container-fluid p-4">
-        <div class="row align-items-center g-5">
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
+        <div class="container-fluid p-4">
+            <div class="row align-items-center g-5">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                </div>
                 <div class="card p-4">
                     <center>
-                        <img class="card-img-top" style="width: 250px;" src="https://learn.ml5js.org/_media/reference__header-neural-network.png" alt="">
+                        <img class="card-img-top" style="width: 250px;"
+                            src="https://learn.ml5js.org/_media/reference__header-neural-network.png" alt="">
                     </center>
                     <div class="card-body text-center">
                         <h4 class="card-title">¿Qué color es éste?</h4>
@@ -58,27 +63,36 @@
                     <div class="row g-3">
                         <div class="col-md-4">
                             <label>R</label>
-                            <input type="number" v-model.number="input.r" class="form-control">
+                            <input type="range" v-model.number="input.r" class="form-control" min="0" max="255"
+                                id="rojo" value="202" @change="colores()">
                         </div>
                         <div class="col-md-4">
                             <label>G</label>
-                            <input type="number" v-model.number="input.g" class="form-control">
+                            <input type="range" v-model.number="input.g" class="form-control" min="0" max="255"
+                                id="verde" value="108" @change="colores()">
                         </div>
                         <div class="col-md-4">
                             <label>B</label>
-                            <input type="number" v-model.number="input.b" class="form-control">
+                            <input type="range" v-model.number="input.b" class="form-control" min="0" max="255"
+                                id="azul" value="249" @change="colores()">
+                        </div>
+                        <div>
+                            <input class="caja" type="text" id="caja" value="RGB(202, 108, 249)" />
                         </div>
                         <div class="col-md-12">
-                            <button @click="iniciar()" style="width: 100%; background-color: #6f42c1;" type="button" class="btn btn-md btn-dark">Iniciar</button>
+                            <button @click="iniciar()" style="width: 100%; background-color: #6f42c1;" type="button"
+                                class="btn btn-md btn-dark">Iniciar</button>
                         </div>
                     </div>
                     <div v-if="resultados" class="card-body text-center">
-                        <div class="card-body text-center border border-success rounded shadow" style="border-color: #6f42c1 !important;">
+                        <div class="card-body text-center border border-success rounded shadow"
+                            style="border-color: #6f42c1 !important;">
                             <p><b style="color: #6f42c1;">Neurona: </b>Creo que es:</p>
                         </div>
                         <div class="p-4 mt-2 border shadow rounded" style="overflow: auto; height: 120px;">
                             <div v-for="(resultado, index) in resultados">
-                                <div v-if="index == 0" class="border border-success rounded shadow p-2" style="border-color: #6f42c1 !important;">
+                                <div v-if="index == 0" class="border border-success rounded shadow p-2"
+                                    style="border-color: #6f42c1 !important;">
                                     <p style="margin: 0px;">
                                         {{index + 1}} - Color: <b>{{resultado.label}}</b>
                                         <br>
@@ -97,14 +111,19 @@
                         <br>
                         <div class="row">
                             <div class="col-md-6">
-                                <button @click="mal = true" type="button" style="width: 100%; background-color: #6f42c1;" class="btn btn-md btn-dark">Mal</button>
+                                <button @click="mal = true" type="button"
+                                    style="width: 100%; background-color: #6f42c1;"
+                                    class="btn btn-md btn-dark">Mal</button>
                             </div>
                             <div class="col-md-6">
-                                <button @click="bien()" type="button" style="width: 100%; background-color: #6f42c1;" class="btn btn-md btn-dark">Bien</button> 
+                                <button @click="bien()" type="button" style="width: 100%; background-color: #6f42c1;"
+                                    class="btn btn-md btn-dark">Bien</button>
                             </div>
                             <div v-if="mal" class="col-md-12 mt-4">
-                                <input  v-model="color" class="form-control mb-2 mt-2" type="text" placeholder="¿Qué color es?">
-                                <button @click="guardar()" type="button" style="width: 100%; background-color: #6f42c1;" class="btn btn-md btn-dark">Enseñar</button>
+                                <input v-model="color" class="form-control mb-2 mt-2" type="text"
+                                    placeholder="¿Qué color es?">
+                                <button @click="guardar()" type="button" style="width: 100%; background-color: #6f42c1;"
+                                    class="btn btn-md btn-dark">Enseñar</button>
                             </div>
                         </div>
                     </div>
@@ -114,42 +133,42 @@
         </div>
         </div>
     </main>
-    <!--CONFIGURACION-->
+    <!-- CONFIGURACIÓN -->
     <script>
         var app = new Vue({
             el: '#app',
             data: {
-                // Step 1: load data or create some data
+                // Paso 1: Creación o carga de algunos datos
                 db: [],
-                // Step 2: set your neural network options
-                options:{
+                // Paso 2: Configuración de las opciones de la red neuronal
+                options: {
                     task: "classification",
                     debug: true,
                 },
-                // Step 3: initialize your neural network
+                // Paso 3: Inicialización de la red neuronal
                 nn: null,
-                // Step 4: add data to the neural network
+                // Paso 4: Agregar datos a la red neuronal
                 inputs: null,
                 output: null,
-                // Step 6: train your neural network
+                // Paso 6: Entrenamiento de la red neuronal
                 trainingOptions: {
                     epochs: 90,
                     batchSize: 90,
                 },
-                // Step 8: make a classification
+                // Paso 8: Hacer una clasificación
                 input: {
                     r: 0,
                     g: 0,
                     b: 0,
                 },
-                // Step 9: show results
+                // Paso 9: Mostrar resultados
                 resultados: null,
 
                 mal: false,
                 color: null,
             },
             created() {
-                // se obtiene la base de datos
+                // Se obtiene la base de datos
                 db.collection("colores").onSnapshot((querySnapshot) => {
                     let colores = []
                     querySnapshot.forEach((doc) => {
@@ -159,10 +178,21 @@
                 })
             },
             methods: {
-                iniciar(){
-                    // Step 3: initialize your neural network
+                colores() {
+                    // Toma los valores del input
+                    let red = document.getElementById("rojo").value
+                    let green = document.getElementById("verde").value
+                    let blue = document.getElementById("azul").value
+                    let color = "RGB(" + red + ", " + green + ", " + blue + ")"
+
+                    // Estilo body
+                    document.body.style.backgroundColor = color
+                    document.getElementById("caja").value = color
+                },
+                iniciar() {
+                    // Paso 3: Inicialización de la red neuronal
                     this.nn = ml5.neuralNetwork(this.options)
-                    // Step 4: add data to the neural network
+                    // Paso 4: Agregar datos a la red neuronal
                     this.db.forEach((item) => {
                         this.inputs = {
                             r: item.r,
@@ -174,45 +204,44 @@
                         };
                         this.nn.addData(this.inputs, this.output)
                     });
-                    // Step 5: normalize your data;
+                    // Step 5: Normalizar datos
                     this.nn.normalizeData()
                     this.nn.train(this.trainingOptions, this.finishedTraining)
                 },
-                // Step 7: use the trained model
-                finishedTraining(){
+                // Step 7: Utilizar el modelo entrenado
+                finishedTraining() {
                     this.classify()
                 },
-                // Step 8: make a classification
+                // Step 8: Hacer una clasificación
                 classify() {
-                    
+
                     this.nn.classify(this.input, this.handleResults)
                 },
-                // Step 9: define a function to handle the results of your classification
+                // Step 9: Definir una función para manejar los resultados de su clasificación
                 handleResults(error, result) {
                     if (error) {
                         console.error(error)
                         return
                     }
-                    // {label: 'red', confidence: 0.8};
                     this.resultados = result
                 },
-                // si esta bien
-                bien(){
+                // Si está bien
+                bien() {
                     let porcentajes = []
                     for (const resultado of this.resultados) {
                         porcentajes.push(resultado.confidence)
                     }
                     max = Math.max(...porcentajes)
                     for (const resultado of this.resultados) {
-                        if(resultado.confidence == max){
+                        if (resultado.confidence == max) {
                             alert('Color:' + resultado.label + '; ' + '%:' + resultado.confidence)
                         }
                     }
                     this.limpiar()
                 },
-                // aprender
-                guardar(){
-                    // ventana cargando
+                // Aprender
+                guardar() {
+                    // Ventana cargando
                     Swal.fire({
                         icon: 'success',
                         title: 'Aprendiendo...',
@@ -225,37 +254,42 @@
                         `,
                         showConfirmButton: false,
                     })
-                    // crea item de aprendizaje
-                    let item = { r: this.input.r, g: this.input.g, b: this.input.b, color: this.color }
-                    // se guarda en la base de datos
+                    // Crea item de aprendizaje
+                    let item = {
+                        r: this.input.r,
+                        g: this.input.g,
+                        b: this.input.b,
+                        color: this.color
+                    }
+                    // Se guarda en la base de datos
                     db.collection("colores").add(item)
-                    .then((docRef) => {
-                        // finalizar ventana de carga
-                        Swal.close()
-                        // mensaje de consola
-                        console.log("Guardado correctamente con el ID: ", docRef.id)
-                        // volver a intentar
-                        this.iniciar()
-                        // limpiar
-                        this.mal = false
-                    })
-                    .catch((error) => {
-                        // finalizar ventana de carga
-                        Swal.close()
-                        // ventana de error
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Ha ocurrido un error inesperado, revisa la consola del navegador para más detalles.',
-                            showConfirmButton: true,
-                            confirmButtonText: 'Entendido',
+                        .then((docRef) => {
+                            // Finalizar ventana de carga
+                            Swal.close()
+                            // Mensaje de consola
+                            console.log("Guardado correctamente con el ID: ", docRef.id)
+                            // Volver a intentar
+                            this.iniciar()
+                            // Limpiar
+                            this.mal = false
                         })
-                        // mensaje de consola
-                        console.error("Error: ", error);
-                    })
+                        .catch((error) => {
+                            // Finalizar ventana de carga
+                            Swal.close()
+                            // Ventana de error
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Ha ocurrido un error inesperado, revisa la consola del navegador para más detalles.',
+                                showConfirmButton: true,
+                                confirmButtonText: 'Entendido',
+                            })
+                            // Mensaje de consola
+                            console.error("Error: ", error);
+                        })
                 },
-                // limpiamos campos
-                limpiar(){
+                // Limpiamos campos
+                limpiar() {
                     this.input.r = 0
                     this.input.g = 0
                     this.input.b = 0
@@ -267,5 +301,6 @@
             },
         })
     </script>
-  </body>
+</body>
+
 </html>
