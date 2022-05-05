@@ -1,7 +1,7 @@
 # ml5_red_neuronal
 
 Ml5.js brinda un aprendizaje automático amigable para la Web.
-Un enfoque de vencindad para crear y explorar la inteligencia artificial en el navegador.
+Un enfoque de vecindad para crear y explorar la inteligencia artificial en el navegador.
 
 He creado esta pequeña implementación junto con mis compañeros de universidad para poder dar una demostración en la materia de Redes Neuronales.
 
