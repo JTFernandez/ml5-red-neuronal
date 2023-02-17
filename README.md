@@ -1,4 +1,4 @@
-# ml5_red_neuronal
+# ml5-red-neuronal
 
 Ml5.js brinda un aprendizaje automático amigable para la Web.
 Un enfoque de vecindad para crear y explorar la inteligencia artificial en el navegador.
